@@ -7,9 +7,13 @@ const getGitlabHost = () => config.get('host');
 
 const getGitlabToken = () => config.get('token');
 
+const getProjects = () => config.get('projects');
+
 const checkGitlabHostExists = () => config.has('host');
 
 const checkGitlabTokenExists = () => config.has('token');
+
+const checkProjectsExists = () => config.has('projects');
 
 const promptForGitlabHost = async () => {
   const response = await prompts({
@@ -27,7 +31,7 @@ const promptForGitlabHost = async () => {
 
 const promptForGitlabToken = async () => {
   const response = await prompts({
-    type: 'text',
+    type: 'password',
     name: 'token',
     message: 'Gitlab Token:',
     validate: token => typeof token === 'string' && token.length > 0
@@ -41,11 +45,40 @@ const promptForGitlabToken = async () => {
   return true;
 }
 
+const promptForPackageName = async () => {
+  const response = await prompts({
+    type: 'text',
+    name: 'name',
+    message: 'Package Name:',
+    validate: name => typeof name === 'string' && name.length > 0
+      ? true : 'Invalid Name.',
+  });
+
+  return response;
+}
+
+const promptForUseLocalRepoCache = async () => {
+  const response = await prompts({
+    type: 'toggle',
+    name: 'value',
+    message: 'Use Local Cache of Repositories Records ?',
+    initial: true,
+    active: 'Y',
+    inactive: 'N'
+  });
+
+  return response;
+}
+
 module.exports = {
   getGitlabHost,
   getGitlabToken,
+  getProjects,
   checkGitlabHostExists,
   checkGitlabTokenExists,
+  checkProjectsExists,
   promptForGitlabHost,
   promptForGitlabToken,
-}
+  promptForPackageName,
+  promptForUseLocalRepoCache,
+};

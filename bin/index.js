@@ -3,10 +3,10 @@
 const { program } = require('commander');
 
 const {
-  repoSyncHandler, loginHandler,
+  repoSyncHandler, loginHandler, packageSearchHandler,
 } = require('./handler');
 
-program.version('0.1.0');
+program.version('0.1.1');
 
 program
   .command('login')
@@ -28,7 +28,7 @@ program
   .alias('ps')
   .description('Find the repositories that are using target npm package.')
   .action(async () => {
-    // await checkGitlabDetails();
+    await packageSearchHandler();
   });
 
 program.parse(process.argv);

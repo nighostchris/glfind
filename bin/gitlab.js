@@ -1,6 +1,6 @@
 const { Gitlab } = require('@gitbeaker/node');
 
-exports.getAllProjects = async (host, token) => {
+getAllProjects = async (host, token) => {
   const api = new Gitlab({ host, token });
 
   const result = await api.Projects.all();
@@ -11,3 +11,21 @@ exports.getAllProjects = async (host, token) => {
     description: project.description,
   }));
 }
+
+getFileByProjectId = async (host, token, id, filePath) => {
+  let file = {};
+  const api = new Gitlab({ host, token });
+
+  try {
+    file = await api.RepositoryFiles.showRaw(id, filePath, 'master');
+  } catch (error) {
+    return file;
+  }
+
+  return file;
+}
+
+module.exports = {
+  getAllProjects,
+  getFileByProjectId,
+};
